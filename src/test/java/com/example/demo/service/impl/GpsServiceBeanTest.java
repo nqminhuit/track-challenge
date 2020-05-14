@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import static org.junit.Assert.assertEquals;
 import java.util.List;
 import com.example.demo.domain.GPS;
 import org.junit.Before;
