@@ -6,10 +6,18 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    xsd2java
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.8.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web:1.5.8.RELEASE'
-    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    xsd2java 'javax.xml.bind:jaxb-api:2.3.0'
+    // implementation 'com.sun.xml.bind:jaxb-impl:2.3.0'
+    xsd2java 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
+    xsd2java 'com.sun.xml.bind:jaxb-xjc:2.3.0'
+    xsd2java 'javax.activation:activation:1.1'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:3.2.4'
@@ -20,4 +28,37 @@ dependencies {
 
 application {
     mainClassName = 'com.example.demo.DemoApplication'
+}
+
+project.ext {
+    jaxbTargetDir = file("src/main/java/")
+}
+
+task xsd2java() {
+
+    doLast {
+        'xjc -d src/main/java/ -p generated.com.example.demo.dto src/main/resources/jaxb.xsd'.execute()
+        // jaxbTargetDir.mkdirs()
+
+        // ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.xsd2java.asPath)
+        // ant.jaxbTargetDir = jaxbTargetDir
+
+        // ant.xjc(
+        //         destdir: '${jaxbTargetDir}',
+        //         package: 'generated.com.example.demo.dto',
+        //         schema: 'src/main/resources/jaxb.xsd'
+        // )
+
+        // ant.xjc(
+        //         destdir: '${jaxbTargetDir}',
+        //         package: 'com.example.response',
+        //         schema: 'src/main/resources/XMLres.xsd'
+        // )
+
+    }
+}
+compileJava.dependsOn xsd2java
+
+clean {
+    delete 'src/main/java/generated'
 }
