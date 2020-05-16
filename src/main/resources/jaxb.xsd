@@ -3,6 +3,7 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
     jaxb:version="2.0">
+
     <!-- xmlns="http://www.topografix.com/GPX/1/1"
     targetNamespace="http://www.topografix.com/GPX/1/1" -->
 
@@ -61,14 +62,6 @@
         <xsd:attribute name="lon" type="xsd:decimal"/>
     </xsd:complexType>
 
-    <!-- <xsd:complexType name="GpsDto">
-        <xsd:sequence>
-            <xsd:element name="metadata" type="MetadataDto"/>
-            <xsd:element name="wpt" maxOccurs="unbounded" type="WaypointDto"/>
-            <xsd:element name="trk" maxOccurs="unbounded" type="TrackDto"/>
-        </xsd:sequence>
-    </xsd:complexType> -->
-
     <xsd:element name="gpx">
         <xsd:complexType>
             <xsd:sequence>
@@ -76,8 +69,6 @@
                 <xsd:element name="wpt" maxOccurs="unbounded" type="WaypointDto"/>
                 <xsd:element name="trk" maxOccurs="unbounded" type="TrackDto"/>
             </xsd:sequence>
-        <xsd:attribute name="version" type="xsd:string"/>
-        <xsd:attribute name="creator" type="xsd:string"/>
         </xsd:complexType>
     </xsd:element>
 
