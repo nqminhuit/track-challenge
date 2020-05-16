@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "track-point")
+@Table(name = "track_point")
 public class TrackPoint {
 
     @Id

@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "track-segment")
+@Table(name = "track_segment")
 public class TrackSegment {
 
     @Id
