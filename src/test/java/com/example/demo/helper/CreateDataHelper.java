@@ -13,6 +13,9 @@ import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.LinkDto;
 import com.example.demo.dto.MetadataDto;
+import com.example.demo.dto.TrackDto;
+import com.example.demo.dto.TrackPointDto;
+import com.example.demo.dto.TrackSegmentDto;
 import com.example.demo.dto.WaypointDto;
 
 public class CreateDataHelper {
@@ -99,5 +102,54 @@ public class CreateDataHelper {
         trackPoint.setLon(lon);
         trackPoint.setTime(time);
         return trackPoint;
+    }
+
+    public static TrackDto createTrackDto() throws DatatypeConfigurationException {
+        TrackDto dto = new TrackDto();
+        dto.getTrkseg().add(createTrackSegmentDto());
+        return dto;
+    }
+
+    private static TrackSegmentDto createTrackSegmentDto() throws DatatypeConfigurationException {
+        TrackSegmentDto trkSeg = new TrackSegmentDto();
+        trkSeg.getTrkpt()
+            .add(createTrackPointDto(
+                new BigDecimal(123.456),
+                new BigDecimal(12.34),
+                new BigDecimal(-12.34),
+                getXMLGregorianCalendar(new Date())));
+
+        trkSeg.getTrkpt()
+            .add(createTrackPointDto(
+                new BigDecimal(121.456),
+                new BigDecimal(11.34),
+                new BigDecimal(-11.34),
+                getXMLGregorianCalendar(new Date())));
+
+        trkSeg.getTrkpt()
+            .add(createTrackPointDto(
+                new BigDecimal(120.456),
+                new BigDecimal(10.34),
+                new BigDecimal(-10.34),
+                getXMLGregorianCalendar(new Date())));
+
+        trkSeg.getTrkpt()
+            .add(createTrackPointDto(
+                new BigDecimal(113.456),
+                new BigDecimal(11.34),
+                new BigDecimal(-1.34),
+                getXMLGregorianCalendar(new Date())));
+        return trkSeg;
+    }
+
+    private static TrackPointDto createTrackPointDto(BigDecimal ele, BigDecimal lat, BigDecimal lon,
+        XMLGregorianCalendar time) {
+
+        TrackPointDto dto = new TrackPointDto();
+        dto.setEle(ele);
+        dto.setLat(lat);
+        dto.setLon(lon);
+        dto.setTime(time);
+        return dto;
     }
 }

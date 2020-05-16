@@ -1,7 +1,7 @@
 package com.example.demo.converter;
 
 import static com.example.demo.helper.AssertionHelper.assertMetadata;
-import static com.example.demo.helper.AssertionHelper.assertWaypoint;
+import static com.example.demo.helper.AssertionHelper.assertWaypoints;
 import static com.example.demo.helper.CreateDataHelper.createMetadataEntity;
 import static com.example.demo.helper.CreateDataHelper.createWaypointEntity;
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class DtoConverterTest {
         WaypointDto dto = converter.toDto(entity);
 
         // then:
-        assertWaypoint(Collections.singletonList(entity), Collections.singletonList(dto));
+        assertWaypoints(Collections.singletonList(entity), Collections.singletonList(dto));
     }
 
     @Test

@@ -1,9 +1,11 @@
 package com.example.demo.converter;
 
 import static com.example.demo.helper.AssertionHelper.assertMetadata;
-import static com.example.demo.helper.AssertionHelper.assertWaypoint;
+import static com.example.demo.helper.AssertionHelper.assertWaypoints;
+import static com.example.demo.helper.AssertionHelper.assertTracks;
 import static com.example.demo.helper.CreateDataHelper.createMetadataDto;
 import static com.example.demo.helper.CreateDataHelper.createWaypointDto;
+import static com.example.demo.helper.CreateDataHelper.createTrackDto;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
@@ -38,7 +40,7 @@ public class EntityConverterTest {
         Waypoint entity = converter.toEntity(dto);
 
         // then:
-        assertWaypoint(Collections.singletonList(entity), Collections.singletonList(dto));
+        assertWaypoints(Collections.singletonList(entity), Collections.singletonList(dto));
     }
 
     @Test
@@ -69,16 +71,18 @@ public class EntityConverterTest {
             "waypoint 1", "/static/wpt/Waypoint1"));
         dto.getWpt().add(createWaypointDto(new BigDecimal(200), new BigDecimal(-200),
             "waypoint 2", "/static/wpt/Waypoint2"));
-        dto.getWpt().add(createWaypointDto(new BigDecimal(300), new BigDecimal(
-            -300),
+        dto.getWpt().add(createWaypointDto(new BigDecimal(300), new BigDecimal(-300),
             "waypoint 3", "/static/wpt/Waypoint3"));
+
+        dto.getTrk().add(createTrackDto());
 
         // when:
         GPS entity = converter.toEntity(dto);
 
         // then:
         assertMetadata(entity.getMetadata(), dto.getMetadata());
-        assertWaypoint(entity.getWaypoints(), dto.getWpt());
+        assertWaypoints(entity.getWaypoints(), dto.getWpt());
+        assertTracks(entity.getTracks(), dto.getTrk());
     }
 
 }
