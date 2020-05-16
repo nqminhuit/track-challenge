@@ -26,5 +26,5 @@ nbdist/
 bin/
 build/
 .gradle/
-generated/
+dto/
 .vscode/settings.json
