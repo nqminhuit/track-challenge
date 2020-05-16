@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -46,19 +47,17 @@ public class GPS {
     }
 
     public List<Waypoint> getWaypoints() {
+        if (waypoints == null) {
+            waypoints = new ArrayList<>();
+        }
         return waypoints;
     }
 
-    public void setWaypoints(List<Waypoint> waypoints) {
-        this.waypoints = waypoints;
-    }
-
     public List<Track> getTracks() {
+        if (tracks == null) {
+            tracks = new ArrayList<>();
+        }
         return tracks;
-    }
-
-    public void setTracks(List<Track> tracks) {
-        this.tracks = tracks;
     }
 
 }

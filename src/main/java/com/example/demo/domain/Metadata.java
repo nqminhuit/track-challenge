@@ -28,7 +28,7 @@ public class Metadata {
     @Column(name = "link_href")
     private String linkHref;
 
-    @Column(name = "linkText")
+    @Column(name = "link_text")
     private String linkText;
 
     @Column(name = "time")

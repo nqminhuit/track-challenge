@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -40,6 +41,17 @@ public class TrackSegment {
 
     public void setTrack(Track track) {
         this.track = track;
+    }
+
+    public List<TrackPoint> getTrackPoints() {
+        if (trackPoints == null) {
+            trackPoints = new ArrayList<>();
+        }
+        return trackPoints;
+    }
+
+    public void setTrackPoints(List<TrackPoint> trackPoints) {
+        this.trackPoints = trackPoints;
     }
 
 }
