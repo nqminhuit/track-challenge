@@ -20,15 +20,13 @@ public class GPS {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "gps_id")
+    @JoinColumn(name = "metadata_id")
     private Metadata metadata;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "gps_id")
+    @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Waypoint> waypoints;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "gps_id")
+    @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracks;
 
     public Long getId() {

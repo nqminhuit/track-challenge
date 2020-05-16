@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,8 +19,11 @@ public class Track {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "track_id")
+    @ManyToOne
+    @JoinColumn(name = "gps_id")
+    private GPS gps;
+
+    @OneToMany(mappedBy = "track", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TrackSegment> trackSegments;
 
     public Long getId() {
@@ -30,12 +34,12 @@ public class Track {
         this.id = id;
     }
 
-    public List<TrackSegment> getTrackSegments() {
-        return trackSegments;
+    public GPS getGps() {
+        return gps;
     }
 
-    public void setTrackSegments(List<TrackSegment> trackSegments) {
-        this.trackSegments = trackSegments;
+    public void setGps(GPS gps) {
+        this.gps = gps;
     }
 
 }
