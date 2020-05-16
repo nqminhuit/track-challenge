@@ -28,3 +28,6 @@ build/
 .gradle/
 dto/
 .vscode/settings.json
+
+### Personal files ###
+draft*
