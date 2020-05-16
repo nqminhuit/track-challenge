@@ -1,12 +1,20 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import com.example.demo.converter.DtoConverter;
+import com.example.demo.converter.EntityConverter;
 import com.example.demo.domain.GPS;
-import com.example.demo.service.GpsService;
+import com.example.demo.dto.Gpx;
+import com.example.demo.repository.GpsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,22 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/gps")
 public class GpsController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(GpsController.class);
+
     @Autowired
-    private GpsService gpsService;
+    private GpsRepository gpsRepository;
+
+    @Autowired
+    private EntityConverter entityConverter;
+
+    @Autowired
+    private DtoConverter dtoConverter;
 
     @GetMapping("/latest")
     public List<GPS> getLatestGpses() {
-        return gpsService.getLatestGpses();
+        List<GPS> gpses = new ArrayList<>();
+        gpsRepository.findAll().forEach(gpses::add);
+        return gpses;
     }
 
     @GetMapping("/{id}")
-    public GPS getGpsById(@PathVariable("id") Long id) {
-        return gpsService.getGpsById(id);
+    public Gpx getGpsById(@PathVariable("id") Long id) {
+        GPS gps = gpsRepository.findOne(id);
+        return dtoConverter.toDto(gps);
     }
 
-    @PostMapping("/upload")
-    public void uploadGps() {
-        gpsService.addGps(null);
+    @PostMapping(path = "/upload", consumes = MediaType.TEXT_XML_VALUE)
+    public void uploadGps(@RequestBody Gpx gpx) {
+        GPS gps = entityConverter.toEntity(gpx);
+        gpsRepository.save(gps);
     }
 
 }
