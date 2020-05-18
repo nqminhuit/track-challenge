@@ -41,8 +41,8 @@ public class GpsController {
     }
 
     @GetMapping("/{id}")
-    public Gpx getGpsById(@PathVariable("id") Long id) {
-        GPS gps = gpsRepository.findOne(id);
+    public Gpx getGpxById(@PathVariable("id") Long id) {
+        GPS gps = gpsRepository.getFetchedGpsById(id);
         return dtoConverter.toDto(gps);
     }
 
