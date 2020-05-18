@@ -35,7 +35,7 @@ public class DtoConverterTest {
         WaypointDto dto = converter.toDto(entity);
 
         // then:
-        assertWaypoints(Collections.singletonList(entity), Collections.singletonList(dto));
+        assertWaypoints(Collections.singleton(entity), Collections.singletonList(dto));
     }
 
     @Test

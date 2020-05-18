@@ -1,7 +1,7 @@
 package com.example.demo.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,10 +25,10 @@ public class GPS {
     private Metadata metadata;
 
     @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Waypoint> waypoints;
+    private Set<Waypoint> waypoints;
 
     @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Track> tracks;
+    private Set<Track> tracks;
 
     public Long getId() {
         return id;
@@ -46,16 +46,16 @@ public class GPS {
         this.metadata = metadata;
     }
 
-    public List<Waypoint> getWaypoints() {
+    public Set<Waypoint> getWaypoints() {
         if (waypoints == null) {
-            waypoints = new ArrayList<>();
+            waypoints = new HashSet<>();
         }
         return waypoints;
     }
 
-    public List<Track> getTracks() {
+    public Set<Track> getTracks() {
         if (tracks == null) {
-            tracks = new ArrayList<>();
+            tracks = new HashSet<>();
         }
         return tracks;
     }

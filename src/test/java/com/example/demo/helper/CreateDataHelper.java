@@ -89,12 +89,12 @@ public class CreateDataHelper {
     public static TrackSegment createTrackSegment() {
         TrackSegment trackSegment = new TrackSegment();
         for (Long i = 1L; i < 5; i++) {
-            trackSegment.getTrackPoints().add(createTrackPoint(123.456D, i, 12.34D, -12.34D, new Date()));
+            trackSegment.getTrackPoints().add(createTrackPoint(i, 123.456D, 12.34D, -12.34D, new Date()));
         }
         return trackSegment;
     }
 
-    public static TrackPoint createTrackPoint(Double ele, Long id, Double lat, Double lon, Date time) {
+    public static TrackPoint createTrackPoint(Long id, Double ele, Double lat, Double lon, Date time) {
         TrackPoint trackPoint = new TrackPoint();
         trackPoint.setEle(ele);
         trackPoint.setId(id);

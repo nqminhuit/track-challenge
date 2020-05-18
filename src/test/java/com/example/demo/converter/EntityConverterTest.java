@@ -40,7 +40,7 @@ public class EntityConverterTest {
         Waypoint entity = converter.toEntity(dto);
 
         // then:
-        assertWaypoints(Collections.singletonList(entity), Collections.singletonList(dto));
+        assertWaypoints(Collections.singleton(entity), Collections.singletonList(dto));
     }
 
     @Test

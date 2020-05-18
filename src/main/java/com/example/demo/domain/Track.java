@@ -1,7 +1,7 @@
 package com.example.demo.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +25,7 @@ public class Track {
     private GPS gps;
 
     @OneToMany(mappedBy = "track", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TrackSegment> trackSegments;
+    private Set<TrackSegment> trackSegments;
 
     public Long getId() {
         return id;
@@ -43,9 +43,9 @@ public class Track {
         this.gps = gps;
     }
 
-    public List<TrackSegment> getTrackSegments() {
+    public Set<TrackSegment> getTrackSegments() {
         if (trackSegments == null) {
-            trackSegments = new ArrayList<>();
+            trackSegments = new HashSet<>();
         }
         return trackSegments;
     }

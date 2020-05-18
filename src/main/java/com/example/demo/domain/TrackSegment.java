@@ -1,7 +1,7 @@
 package com.example.demo.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +25,7 @@ public class TrackSegment {
     private Track track;
 
     @OneToMany(mappedBy = "trackSegment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TrackPoint> trackPoints;
+    private Set<TrackPoint> trackPoints;
 
     public Long getId() {
         return id;
@@ -43,15 +43,11 @@ public class TrackSegment {
         this.track = track;
     }
 
-    public List<TrackPoint> getTrackPoints() {
+    public Set<TrackPoint> getTrackPoints() {
         if (trackPoints == null) {
-            trackPoints = new ArrayList<>();
+            trackPoints = new HashSet<>();
         }
         return trackPoints;
-    }
-
-    public void setTrackPoints(List<TrackPoint> trackPoints) {
-        this.trackPoints = trackPoints;
     }
 
 }
