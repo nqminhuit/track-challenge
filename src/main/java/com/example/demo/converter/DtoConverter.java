@@ -57,21 +57,21 @@ public class DtoConverter {
         return modelMapper.map(entity, WaypointDto.class);
     }
 
-    public TrackDto toDto(Track entity) {
+    private TrackDto toDto(Track entity) {
         TrackDto dto = new TrackDto();
         List<TrackSegmentDto> trackSegs = entity.getTrackSegments().stream().map(this::toDto).collect(Collectors.toList());
         dto.getTrkseg().addAll(trackSegs);
         return dto;
     }
 
-    public TrackSegmentDto toDto(TrackSegment entity) {
+    private TrackSegmentDto toDto(TrackSegment entity) {
         TrackSegmentDto dto = new TrackSegmentDto();
         List<TrackPointDto> points = entity.getTrackPoints().stream().map(this::toDto).collect(Collectors.toList());
         dto.getTrkpt().addAll(points);
         return dto;
     }
 
-    public TrackPointDto toDto(TrackPoint entity) {
+    private TrackPointDto toDto(TrackPoint entity) {
         return modelMapper.map(entity, TrackPointDto.class);
     }
 
