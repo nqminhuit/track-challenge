@@ -7,22 +7,20 @@ import com.example.demo.converter.EntityConverter;
 import com.example.demo.domain.GPS;
 import com.example.demo.dto.Gpx;
 import com.example.demo.repository.GpsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/gps")
 public class GpsController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(GpsController.class);
 
     @Autowired
     private GpsRepository gpsRepository;
@@ -34,8 +32,8 @@ public class GpsController {
     private DtoConverter dtoConverter;
 
     @GetMapping("/latest")
-    public List<Gpx> getLatestGpses() {
-        return gpsRepository.getAllGpsOnlyFetchMetadata()
+    public List<Gpx> getLatestGpses(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return gpsRepository.getAllGpsOnlyFetchMetadata(new PageRequest(page, size))
             .stream()
             .map(entity -> dtoConverter.toDtoOnlyMetadata(entity))
             .collect(toList());

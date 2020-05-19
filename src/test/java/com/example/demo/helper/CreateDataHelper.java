@@ -177,7 +177,7 @@ public class CreateDataHelper {
                 "Black Pearl Travel",
                 "BlackPearl",
                 "https://www.blackpearl.com",
-                createTime("2020-01-01 12:34:56.78")));
+                new Date()));
 
         gpx.getWpt().add(createWaypointDto(
             new BigDecimal(110), new BigDecimal(10), "pointway 1", "/point/way/something"));
