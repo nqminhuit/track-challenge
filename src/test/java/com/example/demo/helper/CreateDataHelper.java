@@ -1,13 +1,16 @@
 package com.example.demo.helper;
 
+import static java.util.Collections.singletonList;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
 import com.example.demo.domain.TrackPoint;
@@ -213,5 +216,31 @@ public class CreateDataHelper {
             getXMLGregorianCalendar(new Date())));
 
         return gpx;
+    }
+
+    public static GPS createGps() throws DatatypeConfigurationException {
+        GPS gps = new GPS();
+        gps.setMetadata(
+            createMetadataEntity("Jack Sparrow",
+                "This is the GPS of the Black Pearl!",
+                1L,
+                "https://www.blackpearl.com",
+                "BlackPearl",
+                "Black Pearl Travel",
+                createTime("2020-01-01 12:34:56.78")));
+
+        gps.addAllWaypoints(
+            singletonList(createWaypointEntity(1L, 110D, 10D, "pointway 1", "/point/way/something")));
+
+        List<Track> trks = new ArrayList<>();
+
+        TrackSegment trackSegment = new TrackSegment();
+        trackSegment.addAllTrackPoints(singletonList(createTrackPoint(1L,1000D,500D,30D,new Date())));
+
+        Track track = new Track();
+        track.addAllTrackSegments(singletonList(trackSegment));
+
+        gps.addAllTracks(trks);
+        return gps;
     }
 }

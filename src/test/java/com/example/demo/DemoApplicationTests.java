@@ -5,7 +5,6 @@ import static com.example.demo.helper.AssertionHelper.assertThatGpxRetrievedAndC
 import static com.example.demo.helper.CreateDataHelper.createGpx;
 import static com.example.demo.helper.CreateDataHelper.createTime;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThat;
 import java.util.List;
 import java.util.Set;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -18,8 +17,6 @@ import com.example.demo.dto.Gpx;
 import com.example.demo.repository.GpsRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,8 +24,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DemoApplicationTests.class);
 
     @Autowired
     private GpsController gpsController;
@@ -80,7 +75,7 @@ public class DemoApplicationTests {
         assertThat(metadata.getTime()).isEqualToIgnoringMillis(createTime("2020-01-01 12:34:56.78"));
 
         // only need to test availability b/c
-        // we already had test for the details of gpsRepository#getFetchedGpsById
+        // we already had test for the details at gpsRepository#getFetchedGpsById
         assertThat(gps.getWaypoints()).hasSize(3);
         Set<Track> tracks = gps.getTracks();
         assertThat(tracks).hasSize(1);
@@ -90,12 +85,17 @@ public class DemoApplicationTests {
     }
 
     @Test
-    public void getLatestGpx() {
+    public void getLatestGpx() throws DatatypeConfigurationException {
         // given:
+        gpsController.uploadGps(createGpx());
+        gpsController.uploadGps(createGpx());
+        gpsController.uploadGps(createGpx());
+        gpsController.uploadGps(createGpx());
 
         // when:
-        List<GPS> gpses = gpsController.getLatestGpses();
+        List<Gpx> gpxes = gpsController.getLatestGpses();
 
         // then:
+        assertThat(gpxes).hasSize(5);
     }
 }

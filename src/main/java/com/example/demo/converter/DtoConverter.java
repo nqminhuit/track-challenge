@@ -1,8 +1,8 @@
 package com.example.demo.converter;
 
+import static java.util.stream.Collectors.toList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import com.example.demo.domain.GPS;
@@ -37,14 +37,19 @@ public class DtoConverter {
     }
 
     public Gpx toDto(GPS entity) {
-        List<WaypointDto> waypointDtos =
-            entity.getWaypoints().stream().map(this::toDto).collect(Collectors.toList());
-        List<TrackDto> trackDto = entity.getTracks().stream().map(this::toDto).collect(Collectors.toList());
+        List<WaypointDto> waypointDtos = entity.getWaypoints().stream().map(this::toDto).collect(toList());
+        List<TrackDto> trackDto = entity.getTracks().stream().map(this::toDto).collect(toList());
 
         Gpx gpx = new Gpx();
         gpx.setMetadata(toDto(entity.getMetadata()));
         gpx.getWpt().addAll(waypointDtos);
         gpx.getTrk().addAll(trackDto);
+        return gpx;
+    }
+
+    public Gpx toDtoOnlyMetadata(GPS entity) {
+        Gpx gpx = new Gpx();
+        gpx.setMetadata(toDto(entity.getMetadata()));
         return gpx;
     }
 
@@ -76,14 +81,15 @@ public class DtoConverter {
 
     private TrackDto toDto(Track entity) {
         TrackDto dto = new TrackDto();
-        List<TrackSegmentDto> trackSegs = entity.getTrackSegments().stream().map(this::toDto).collect(Collectors.toList());
+        List<TrackSegmentDto> trackSegs =
+            entity.getTrackSegments().stream().map(this::toDto).collect(toList());
         dto.getTrkseg().addAll(trackSegs);
         return dto;
     }
 
     private TrackSegmentDto toDto(TrackSegment entity) {
         TrackSegmentDto dto = new TrackSegmentDto();
-        List<TrackPointDto> points = entity.getTrackPoints().stream().map(this::toDto).collect(Collectors.toList());
+        List<TrackPointDto> points = entity.getTrackPoints().stream().map(this::toDto).collect(toList());
         dto.getTrkpt().addAll(points);
         return dto;
     }

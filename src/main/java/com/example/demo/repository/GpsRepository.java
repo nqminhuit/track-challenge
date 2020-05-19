@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import java.util.List;
 import com.example.demo.domain.GPS;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,8 @@ public interface GpsRepository extends JpaRepository<GPS, Long> {
         "JOIN FETCH trackSegments.trackPoints " +
         "where gps.id = :id")
     GPS getFetchedGpsById(@Param("id") Long id);
+
+    @Query("SELECT gps FROM GPS gps JOIN FETCH gps.metadata metadata order by metadata.time desc")
+    List<GPS> getAllGpsOnlyFetchMetadata();
 
 }

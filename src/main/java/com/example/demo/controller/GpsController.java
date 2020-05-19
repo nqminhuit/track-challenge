@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
 import java.util.List;
 import com.example.demo.converter.DtoConverter;
 import com.example.demo.converter.EntityConverter;
@@ -34,10 +34,11 @@ public class GpsController {
     private DtoConverter dtoConverter;
 
     @GetMapping("/latest")
-    public List<GPS> getLatestGpses() {
-        List<GPS> gpses = new ArrayList<>();
-        gpsRepository.findAll().forEach(gpses::add);
-        return gpses;
+    public List<Gpx> getLatestGpses() {
+        return gpsRepository.getAllGpsOnlyFetchMetadata()
+            .stream()
+            .map(entity -> dtoConverter.toDtoOnlyMetadata(entity))
+            .collect(toList());
     }
 
     @GetMapping("/{id}")

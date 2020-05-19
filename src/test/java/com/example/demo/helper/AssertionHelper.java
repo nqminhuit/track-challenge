@@ -205,24 +205,24 @@ public class AssertionHelper {
         assertThat(trackPoints)
             .extracting("id").containsExactly(-6L, -5L, -4L, -3L, -2L, -1L);
         assertThat(trackPoints)
-            .extracting("ele").containsExactly(11.11D, 11.12D, 11.13D, 11.12D, 11.13D, 11.11D);
+            .extracting("ele").containsExactly(11.11D, 11.13D, 11.12D, 11.13D, 11.12D, 11.11D);
         assertThat(trackPoints)
             .extracting("lat").containsExactly(10.5D, 10.4D, 10.3D, 10.2D, 10.1D, 10.0D);
         assertThat(trackPoints)
-            .extracting("lon").containsExactly(-10.0D, -10.1D, -10.2D, -10.3D, -10.4D, -10.5D);
+            .extracting("lon").containsExactly(-10.5D, -10.4D, -10.3D, -10.2D, -10.1D, -10.0D);
 
         assertThat(trackPoints.get(0).getTime())
-            .isEqualToIgnoringMillis(createTime("2020-05-16 18:47:52.00"));
-        assertThat(trackPoints.get(1).getTime())
-            .isEqualToIgnoringMillis(createTime("2020-05-16 18:48:52.00"));
-        assertThat(trackPoints.get(2).getTime())
-            .isEqualToIgnoringMillis(createTime("2020-05-16 18:49:52.00"));
-        assertThat(trackPoints.get(3).getTime())
-            .isEqualToIgnoringMillis(createTime("2020-05-16 18:50:52.00"));
-        assertThat(trackPoints.get(4).getTime())
-            .isEqualToIgnoringMillis(createTime("2020-05-16 18:51:52.00"));
-        assertThat(trackPoints.get(5).getTime())
             .isEqualToIgnoringMillis(createTime("2020-05-16 18:52:52.00"));
+        assertThat(trackPoints.get(1).getTime())
+            .isEqualToIgnoringMillis(createTime("2020-05-16 18:51:52.00"));
+        assertThat(trackPoints.get(2).getTime())
+            .isEqualToIgnoringMillis(createTime("2020-05-16 18:50:52.00"));
+        assertThat(trackPoints.get(3).getTime())
+            .isEqualToIgnoringMillis(createTime("2020-05-16 18:49:52.00"));
+        assertThat(trackPoints.get(4).getTime())
+            .isEqualToIgnoringMillis(createTime("2020-05-16 18:48:52.00"));
+        assertThat(trackPoints.get(5).getTime())
+            .isEqualToIgnoringMillis(createTime("2020-05-16 18:47:52.00"));
 
         List<Waypoint> waypoints = new ArrayList<>();
         waypoints.addAll(gps.getWaypoints());
