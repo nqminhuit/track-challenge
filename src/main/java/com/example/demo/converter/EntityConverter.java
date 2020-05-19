@@ -1,7 +1,7 @@
 package com.example.demo.converter;
 
+import static java.util.stream.Collectors.toList;
 import java.util.List;
-import java.util.stream.Collectors;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
@@ -9,7 +9,6 @@ import com.example.demo.domain.TrackPoint;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.Gpx;
-import com.example.demo.dto.LinkDto;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
 import com.example.demo.dto.TrackPointDto;
@@ -33,16 +32,16 @@ public class EntityConverter {
         GPS gps = new GPS();
         gps.setMetadata(toEntity(dto.getMetadata()));
 
-        List<Waypoint> waypoints = dto.getWpt().stream().map(this::toEntity).collect(Collectors.toList());
-        gps.getWaypoints().addAll(waypoints);
+        List<Waypoint> waypoints = dto.getWpt().stream().map(this::toEntity).collect(toList());
+        gps.addAllWaypoints(waypoints);
 
-        List<Track> tracks = dto.getTrk().stream().map(this::toEntity).collect(Collectors.toList());
-        gps.getTracks().addAll(tracks);
+        List<Track> tracks = dto.getTrk().stream().map(this::toEntity).collect(toList());
+        gps.addAllTracks(tracks);
         return gps;
     }
 
     public Metadata toEntity(MetadataDto dto) {
-        return modelMapper.typeMap(MetadataDto.class, Metadata.class)
+        Metadata entity = modelMapper.typeMap(MetadataDto.class, Metadata.class)
             .addMappings(mapper -> {
                 mapper.map(src -> src.getDesc(), Metadata::setDescription);
             })
@@ -53,6 +52,8 @@ public class EntityConverter {
                 mapper.map(src -> src.getLink().getText(), Metadata::setLinkText);
             })
             .map(dto);
+        entity.setTime(dto.getTime().toGregorianCalendar().getTime());
+        return entity;
     }
 
     public Waypoint toEntity(WaypointDto dto) {
@@ -60,20 +61,22 @@ public class EntityConverter {
     }
 
     public TrackPoint toEntity(TrackPointDto dto) {
-        return modelMapper.map(dto, TrackPoint.class);
+        TrackPoint entity = modelMapper.map(dto, TrackPoint.class);
+        entity.setTime(dto.getTime().toGregorianCalendar().getTime());
+        return entity;
     }
 
     public TrackSegment toEntity(TrackSegmentDto dto) {
         TrackSegment entity = new TrackSegment();
-        List<TrackPoint> trackPoints = dto.getTrkpt().stream().map(this::toEntity).collect(Collectors.toList());
-        entity.getTrackPoints().addAll(trackPoints);
+        List<TrackPoint> trackPoints = dto.getTrkpt().stream().map(this::toEntity).collect(toList());
+        entity.addAllTrackPoints(trackPoints);
         return entity;
     }
 
     public Track toEntity(TrackDto dto) {
         Track entity = new Track();
-        List<TrackSegment> trackSegments = dto.getTrkseg().stream().map(this::toEntity).collect(Collectors.toList());
-        entity.getTrackSegments().addAll(trackSegments);
+        List<TrackSegment> trackSegments = dto.getTrkseg().stream().map(this::toEntity).collect(toList());
+        entity.addAllTrackSegments(trackSegments);
         return entity;
     }
 

@@ -1,7 +1,10 @@
 package com.example.demo.converter;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
@@ -16,11 +19,15 @@ import com.example.demo.dto.TrackPointDto;
 import com.example.demo.dto.TrackSegmentDto;
 import com.example.demo.dto.WaypointDto;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DtoConverter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DtoConverter.class);
 
     private ModelMapper modelMapper;
 
@@ -30,7 +37,8 @@ public class DtoConverter {
     }
 
     public Gpx toDto(GPS entity) {
-        List<WaypointDto> waypointDtos = entity.getWaypoints().stream().map(this::toDto).collect(Collectors.toList());
+        List<WaypointDto> waypointDtos =
+            entity.getWaypoints().stream().map(this::toDto).collect(Collectors.toList());
         List<TrackDto> trackDto = entity.getTracks().stream().map(this::toDto).collect(Collectors.toList());
 
         Gpx gpx = new Gpx();
@@ -46,6 +54,15 @@ public class DtoConverter {
                 mapper.map(src -> src.getDescription(), MetadataDto::setDesc);
             })
             .map(entity);
+
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(entity.getTime());
+        try {
+            dto.setTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+        }
+        catch (DatatypeConfigurationException e) {
+            LOG.error(e.getMessage());
+        }
         LinkDto linkDto = new LinkDto();
         linkDto.setHref(entity.getLinkHref());
         linkDto.setText(entity.getLinkText());

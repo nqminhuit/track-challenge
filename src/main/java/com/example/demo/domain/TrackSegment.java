@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -25,7 +26,7 @@ public class TrackSegment {
     private Track track;
 
     @OneToMany(mappedBy = "trackSegment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TrackPoint> trackPoints;
+    private Set<TrackPoint> trackPoints = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -44,10 +45,14 @@ public class TrackSegment {
     }
 
     public Set<TrackPoint> getTrackPoints() {
-        if (trackPoints == null) {
-            trackPoints = new HashSet<>();
-        }
         return trackPoints;
+    }
+
+    public void addAllTrackPoints(Collection<TrackPoint> trackPoints) {
+        trackPoints.forEach(trackPoint -> {
+            trackPoint.setTrackSegment(this);
+            this.trackPoints.add(trackPoint);
+        });
     }
 
 }

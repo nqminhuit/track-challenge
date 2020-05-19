@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -20,15 +21,15 @@ public class GPS {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "metadata_id")
     private Metadata metadata;
 
     @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Waypoint> waypoints;
+    private Set<Waypoint> waypoints = new HashSet<>();
 
     @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Track> tracks;
+    private Set<Track> tracks = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -47,17 +48,25 @@ public class GPS {
     }
 
     public Set<Waypoint> getWaypoints() {
-        if (waypoints == null) {
-            waypoints = new HashSet<>();
-        }
         return waypoints;
     }
 
+    public void addAllWaypoints(Collection<Waypoint> waypoints) {
+        waypoints.forEach(waypoint -> {
+            waypoint.setGps(this);
+            this.waypoints.add(waypoint);
+        });
+    }
+
     public Set<Track> getTracks() {
-        if (tracks == null) {
-            tracks = new HashSet<>();
-        }
         return tracks;
+    }
+
+    public void addAllTracks(Collection<Track> tracks) {
+        tracks.forEach(track -> {
+            track.setGps(this);
+            this.tracks.add(track);
+        });
     }
 
 }

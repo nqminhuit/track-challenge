@@ -19,7 +19,7 @@ public class Metadata {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "desc")
+    @Column(name = "desc", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "author")

@@ -1,8 +1,10 @@
 package com.example.demo.helper;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -11,6 +13,7 @@ import com.example.demo.domain.Track;
 import com.example.demo.domain.TrackPoint;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
+import com.example.demo.dto.Gpx;
 import com.example.demo.dto.LinkDto;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
@@ -151,5 +154,64 @@ public class CreateDataHelper {
         dto.setLon(lon);
         dto.setTime(time);
         return dto;
+    }
+
+    public static Date createTime(String time) {
+        try {
+            return Constants.SDT.parse(time);
+        }
+        catch (ParseException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public static Gpx createGpx() throws DatatypeConfigurationException {
+        Gpx gpx = new Gpx();
+        gpx.setMetadata(
+            createMetadataDto("Jack Sparrow",
+                "This is the GPS of the Black Pearl!",
+                "Black Pearl Travel",
+                "BlackPearl",
+                "https://www.blackpearl.com",
+                createTime("2020-01-01 12:34:56.78")));
+
+        gpx.getWpt().add(createWaypointDto(
+            new BigDecimal(110), new BigDecimal(10), "pointway 1", "/point/way/something"));
+        gpx.getWpt().add(createWaypointDto(
+            new BigDecimal(120), new BigDecimal(11), "pointway 2", "/point/way/something"));
+        gpx.getWpt().add(createWaypointDto(
+            new BigDecimal(130), new BigDecimal(10), "pointway 3", "/point/way/something"));
+
+        List<TrackDto> trks = gpx.getTrk();
+        trks.add(new TrackDto());
+        List<TrackSegmentDto> trksegs = trks.get(0).getTrkseg();
+        trksegs.add(new TrackSegmentDto());
+        List<TrackPointDto> trkpts = trksegs.get(0).getTrkpt();
+        trkpts.add(createTrackPointDto(
+            new BigDecimal(1000),
+            new BigDecimal(500),
+            new BigDecimal(30),
+            getXMLGregorianCalendar(new Date())));
+
+        trkpts.add(createTrackPointDto(
+            new BigDecimal(1010),
+            new BigDecimal(501),
+            new BigDecimal(30),
+            getXMLGregorianCalendar(new Date())));
+
+        trkpts.add(createTrackPointDto(
+            new BigDecimal(1020),
+            new BigDecimal(502),
+            new BigDecimal(35),
+            getXMLGregorianCalendar(new Date())));
+
+        trkpts.add(createTrackPointDto(
+            new BigDecimal(1030),
+            new BigDecimal(502),
+            new BigDecimal(30),
+            getXMLGregorianCalendar(new Date())));
+
+        return gpx;
     }
 }
