@@ -12,13 +12,11 @@ import java.util.Set;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
-import com.example.demo.domain.TrackPoint;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.Gpx;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
-import com.example.demo.dto.TrackPointDto;
 import com.example.demo.dto.TrackSegmentDto;
 import com.example.demo.dto.WaypointDto;
 
@@ -67,10 +65,10 @@ public class AssertionHelper {
         }
     }
 
-    private static void assertTrackPoints(Set<TrackPoint> trackPoints, List<TrackPointDto> dtos) {
+    private static void assertTrackPoints(Set<Waypoint> trackPoints, List<WaypointDto> dtos) {
         int entitySize = trackPoints.size();
         assertThat(entitySize).isEqualTo(dtos.size());
-        List<TrackPoint> entities = new ArrayList<>();
+        List<Waypoint> entities = new ArrayList<>();
         entities.addAll(trackPoints);
 
         List<Double> eleDtos = dtos.stream().map(dto -> dto.getEle().doubleValue()).collect(toList());
@@ -81,9 +79,9 @@ public class AssertionHelper {
         assertThat(entities).extracting("lat").containsExactlyInAnyOrder(latDtos.toArray());
         assertThat(entities).extracting("lon").containsExactlyInAnyOrder(lonDtos.toArray());
 
-        entities.sort(Constants.BY_TRACKPOINT_TIME);
-        Iterator<TrackPoint> entityIterator = entities.iterator();
-        Iterator<TrackPointDto> dtoIterator = dtos.iterator();
+        entities.sort(Constants.BY_WAYPOINT_TIME);
+        Iterator<Waypoint> entityIterator = entities.iterator();
+        Iterator<WaypointDto> dtoIterator = dtos.iterator();
 
         while (entityIterator.hasNext()) {
             Date entityTime = entityIterator.next().getTime();
@@ -136,9 +134,9 @@ public class AssertionHelper {
         assertThat(tracks).hasSize(1);
         List<TrackSegmentDto> trackSegments = tracks.iterator().next().getTrkseg();
         assertThat(trackSegments).hasSize(1);
-        List<TrackPointDto> trackPoints = trackSegments.iterator().next().getTrkpt();
+        List<WaypointDto> trackPoints = trackSegments.iterator().next().getTrkpt();
 
-        trackPoints.sort(Constants.BY_TRACKPOINTDTO_LAT);
+        trackPoints.sort(Constants.BY_WAYPOINTDTO_LAT);
         assertThat(trackPoints.get(0).getLat().doubleValue()).isEqualTo(10.0D);
         assertThat(trackPoints.get(1).getLat().doubleValue()).isEqualTo(10.1D);
         assertThat(trackPoints.get(2).getLat().doubleValue()).isEqualTo(10.2D);
@@ -197,13 +195,13 @@ public class AssertionHelper {
         TrackSegment trackSegment = trackSegments.iterator().next();
         assertThat(trackSegment.getId()).isEqualTo(-1L);
 
-        Set<TrackPoint> trackSegmentPoints = trackSegment.getTrackPoints();
+        Set<Waypoint> trackSegmentPoints = trackSegment.getTrackPoints();
         assertThat(trackSegmentPoints).hasSize(6);
-        List<TrackPoint> trackPoints = new ArrayList<>();
+        List<Waypoint> trackPoints = new ArrayList<>();
         trackPoints.addAll(trackSegmentPoints);
-        trackPoints.sort(Constants.BY_TRACKPOINT_ID);
+        trackPoints.sort(Constants.BY_WAYPOINT_ID);
         assertThat(trackPoints)
-            .extracting("id").containsExactly(-6L, -5L, -4L, -3L, -2L, -1L);
+            .extracting("id").containsExactly(-10L, -9L, -8L, -7L, -6L, -5L);
         assertThat(trackPoints)
             .extracting("ele").containsExactly(11.11D, 11.13D, 11.12D, 11.13D, 11.12D, 11.11D);
         assertThat(trackPoints)

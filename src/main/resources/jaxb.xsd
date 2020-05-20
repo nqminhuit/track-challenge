@@ -2,74 +2,62 @@
 <xsd:schema
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns="http://www.topografix.com/GPX/1/1"
+    elementFormDefault="qualified"
+    targetNamespace="http://www.topografix.com/GPX/1/1"
     jaxb:version="2.0">
 
-    <!-- xmlns="http://www.topografix.com/GPX/1/1"
-    targetNamespace="http://www.topografix.com/GPX/1/1" -->
-
-    <xsd:annotation>
-        <xsd:appinfo>
-            <jaxb:schemaBindings>
-                <jaxb:package name="com.example.demo.dto"/>
-            </jaxb:schemaBindings>
-        </xsd:appinfo>
-    </xsd:annotation>
-
-    <xsd:complexType name="TrackPointDto">
+    <xsd:complexType name="gpx">
         <xsd:sequence>
-            <xsd:element name="ele" type="xsd:decimal"/>
-            <xsd:element name="time" type="xsd:dateTime"/>
+            <xsd:element name="metadata" type="metadataDto" minOccurs="0"/>
+            <xsd:element name="wpt" type="waypointDto" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="trk" type="trackDto" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-        <xsd:attribute name="lat" type="xsd:decimal"/>
-        <xsd:attribute name="lon" type="xsd:decimal"/>
+        <xsd:attribute name="version" type="xsd:string" use="required" fixed="1.1"/>
+        <xsd:attribute name="creator" type="xsd:string" use="required"/>
     </xsd:complexType>
 
-    <xsd:complexType name="TrackSegmentDto">
+    <xsd:complexType name="metadataDto">
         <xsd:sequence>
-            <xsd:element name="trkpt" maxOccurs="unbounded" type="TrackPointDto"/>
+            <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="desc" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="author" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="link" type="linkDto" minOccurs="0"/>
+            <xsd:element name="time" type="xsd:dateTime" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:complexType name="TrackDto">
+    <xsd:complexType name="waypointDto">
         <xsd:sequence>
-            <xsd:element name="trkseg" maxOccurs="unbounded" type="TrackSegmentDto"/>
+            <xsd:element name="ele" type="xsd:decimal" minOccurs="0"/>
+            <xsd:element name="time" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="sym" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="lat" type="xsd:decimal" use="required"/>
+        <xsd:attribute name="lon" type="xsd:decimal" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="trackDto">
+        <xsd:sequence>
+            <xsd:element name="trkseg" type="trackSegmentDto" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:complexType name="LinkDto">
+    <xsd:complexType name="trackSegmentDto">
         <xsd:sequence>
-            <xsd:element name="text" type="xsd:string"/>
-        </xsd:sequence>
-        <xsd:attribute name="href" type="xsd:string"/>
-    </xsd:complexType>
-
-    <xsd:complexType name="MetadataDto">
-        <xsd:sequence>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="desc" type="xsd:string"/>
-            <xsd:element name="author" type="xsd:string"/>
-            <xsd:element name="link" type="LinkDto"/>
-            <xsd:element name="time" type="xsd:dateTime"/>
+            <xsd:element name="trkpt" type="waypointDto" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:complexType name="WaypointDto">
+    <xsd:complexType name="linkDto">
         <xsd:sequence>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="sym" type="xsd:string"/>
+            <xsd:element name="text" type="xsd:string" minOccurs="0"/>
         </xsd:sequence>
-        <xsd:attribute name="lat" type="xsd:decimal"/>
-        <xsd:attribute name="lon" type="xsd:decimal"/>
+        <xsd:attribute name="href" type="xsd:anyURI" use="required"/>
     </xsd:complexType>
 
-    <xsd:element name="gpx">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="metadata" type="MetadataDto"/>
-                <xsd:element name="wpt" maxOccurs="unbounded" type="WaypointDto"/>
-                <xsd:element name="trk" maxOccurs="unbounded" type="TrackDto"/>
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
+    <!-- ========================================== -->
 
+    <xsd:element name="gpx" type="gpx"/>
 </xsd:schema>

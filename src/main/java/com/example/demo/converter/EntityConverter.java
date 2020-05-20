@@ -5,13 +5,11 @@ import java.util.List;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
-import com.example.demo.domain.TrackPoint;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.Gpx;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
-import com.example.demo.dto.TrackPointDto;
 import com.example.demo.dto.TrackSegmentDto;
 import com.example.demo.dto.WaypointDto;
 import org.modelmapper.ModelMapper;
@@ -29,7 +27,7 @@ public class EntityConverter {
     }
 
     public GPS toEntity(Gpx dto) {
-        GPS gps = new GPS();
+        GPS gps = modelMapper.map(dto, GPS.class);
         gps.setMetadata(toEntity(dto.getMetadata()));
 
         List<Waypoint> waypoints = dto.getWpt().stream().map(this::toEntity).collect(toList());
@@ -57,18 +55,16 @@ public class EntityConverter {
     }
 
     public Waypoint toEntity(WaypointDto dto) {
-        return modelMapper.map(dto, Waypoint.class);
-    }
-
-    public TrackPoint toEntity(TrackPointDto dto) {
-        TrackPoint entity = modelMapper.map(dto, TrackPoint.class);
-        entity.setTime(dto.getTime().toGregorianCalendar().getTime());
+        Waypoint entity = modelMapper.map(dto, Waypoint.class);
+        if (dto.getTime() != null) {
+            entity.setTime(dto.getTime().toGregorianCalendar().getTime());
+        }
         return entity;
     }
 
     public TrackSegment toEntity(TrackSegmentDto dto) {
         TrackSegment entity = new TrackSegment();
-        List<TrackPoint> trackPoints = dto.getTrkpt().stream().map(this::toEntity).collect(toList());
+        List<Waypoint> trackPoints = dto.getTrkpt().stream().map(this::toEntity).collect(toList());
         entity.addAllTrackPoints(trackPoints);
         return entity;
     }

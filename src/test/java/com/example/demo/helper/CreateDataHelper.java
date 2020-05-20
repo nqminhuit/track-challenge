@@ -13,14 +13,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
-import com.example.demo.domain.TrackPoint;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.Gpx;
 import com.example.demo.dto.LinkDto;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
-import com.example.demo.dto.TrackPointDto;
 import com.example.demo.dto.TrackSegmentDto;
 import com.example.demo.dto.WaypointDto;
 
@@ -100,8 +98,8 @@ public class CreateDataHelper {
         return trackSegment;
     }
 
-    public static TrackPoint createTrackPoint(Long id, Double ele, Double lat, Double lon, Date time) {
-        TrackPoint trackPoint = new TrackPoint();
+    public static Waypoint createTrackPoint(Long id, Double ele, Double lat, Double lon, Date time) {
+        Waypoint trackPoint = new Waypoint();
         trackPoint.setEle(ele);
         trackPoint.setId(id);
         trackPoint.setLat(lat);
@@ -119,28 +117,28 @@ public class CreateDataHelper {
     private static TrackSegmentDto createTrackSegmentDto() throws DatatypeConfigurationException {
         TrackSegmentDto trkSeg = new TrackSegmentDto();
         trkSeg.getTrkpt()
-            .add(createTrackPointDto(
+            .add(createWaypointDto(
                 new BigDecimal(123.456),
                 new BigDecimal(12.34),
                 new BigDecimal(-12.34),
                 getXMLGregorianCalendar(new Date())));
 
         trkSeg.getTrkpt()
-            .add(createTrackPointDto(
+            .add(createWaypointDto(
                 new BigDecimal(121.456),
                 new BigDecimal(11.34),
                 new BigDecimal(-11.34),
                 getXMLGregorianCalendar(new Date())));
 
         trkSeg.getTrkpt()
-            .add(createTrackPointDto(
+            .add(createWaypointDto(
                 new BigDecimal(120.456),
                 new BigDecimal(10.34),
                 new BigDecimal(-10.34),
                 getXMLGregorianCalendar(new Date())));
 
         trkSeg.getTrkpt()
-            .add(createTrackPointDto(
+            .add(createWaypointDto(
                 new BigDecimal(113.456),
                 new BigDecimal(11.34),
                 new BigDecimal(-1.34),
@@ -148,10 +146,10 @@ public class CreateDataHelper {
         return trkSeg;
     }
 
-    private static TrackPointDto createTrackPointDto(BigDecimal ele, BigDecimal lat, BigDecimal lon,
+    private static WaypointDto createWaypointDto(BigDecimal ele, BigDecimal lat, BigDecimal lon,
         XMLGregorianCalendar time) {
 
-        TrackPointDto dto = new TrackPointDto();
+        WaypointDto dto = new WaypointDto();
         dto.setEle(ele);
         dto.setLat(lat);
         dto.setLon(lon);
@@ -190,26 +188,26 @@ public class CreateDataHelper {
         trks.add(new TrackDto());
         List<TrackSegmentDto> trksegs = trks.get(0).getTrkseg();
         trksegs.add(new TrackSegmentDto());
-        List<TrackPointDto> trkpts = trksegs.get(0).getTrkpt();
-        trkpts.add(createTrackPointDto(
+        List<WaypointDto> trkpts = trksegs.get(0).getTrkpt();
+        trkpts.add(createWaypointDto(
             new BigDecimal(1000),
             new BigDecimal(500),
             new BigDecimal(30),
             getXMLGregorianCalendar(new Date())));
 
-        trkpts.add(createTrackPointDto(
+        trkpts.add(createWaypointDto(
             new BigDecimal(1010),
             new BigDecimal(501),
             new BigDecimal(30),
             getXMLGregorianCalendar(new Date())));
 
-        trkpts.add(createTrackPointDto(
+        trkpts.add(createWaypointDto(
             new BigDecimal(1020),
             new BigDecimal(502),
             new BigDecimal(35),
             getXMLGregorianCalendar(new Date())));
 
-        trkpts.add(createTrackPointDto(
+        trkpts.add(createWaypointDto(
             new BigDecimal(1030),
             new BigDecimal(502),
             new BigDecimal(30),

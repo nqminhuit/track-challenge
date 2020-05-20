@@ -8,14 +8,12 @@ import javax.xml.datatype.DatatypeFactory;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
-import com.example.demo.domain.TrackPoint;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.Gpx;
 import com.example.demo.dto.LinkDto;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
-import com.example.demo.dto.TrackPointDto;
 import com.example.demo.dto.TrackSegmentDto;
 import com.example.demo.dto.WaypointDto;
 import org.modelmapper.ModelMapper;
@@ -40,15 +38,14 @@ public class DtoConverter {
         List<WaypointDto> waypointDtos = entity.getWaypoints().stream().map(this::toDto).collect(toList());
         List<TrackDto> trackDto = entity.getTracks().stream().map(this::toDto).collect(toList());
 
-        Gpx gpx = new Gpx();
-        gpx.setMetadata(toDto(entity.getMetadata()));
+        Gpx gpx = toDtoOnlyMetadata(entity);
         gpx.getWpt().addAll(waypointDtos);
         gpx.getTrk().addAll(trackDto);
         return gpx;
     }
 
     public Gpx toDtoOnlyMetadata(GPS entity) {
-        Gpx gpx = new Gpx();
+        Gpx gpx = modelMapper.map(entity, Gpx.class);
         gpx.setMetadata(toDto(entity.getMetadata()));
         return gpx;
     }
@@ -89,13 +86,9 @@ public class DtoConverter {
 
     private TrackSegmentDto toDto(TrackSegment entity) {
         TrackSegmentDto dto = new TrackSegmentDto();
-        List<TrackPointDto> points = entity.getTrackPoints().stream().map(this::toDto).collect(toList());
+        List<WaypointDto> points = entity.getTrackPoints().stream().map(this::toDto).collect(toList());
         dto.getTrkpt().addAll(points);
         return dto;
-    }
-
-    private TrackPointDto toDto(TrackPoint entity) {
-        return modelMapper.map(entity, TrackPointDto.class);
     }
 
 }

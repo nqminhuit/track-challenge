@@ -26,7 +26,7 @@ public class TrackSegment {
     private Track track;
 
     @OneToMany(mappedBy = "trackSegment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TrackPoint> trackPoints = new HashSet<>();
+    private Set<Waypoint> trackPoints = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -44,11 +44,11 @@ public class TrackSegment {
         this.track = track;
     }
 
-    public Set<TrackPoint> getTrackPoints() {
+    public Set<Waypoint> getTrackPoints() {
         return trackPoints;
     }
 
-    public void addAllTrackPoints(Collection<TrackPoint> trackPoints) {
+    public void addAllTrackPoints(Collection<Waypoint> trackPoints) {
         trackPoints.forEach(trackPoint -> {
             trackPoint.setTrackSegment(this);
             this.trackPoints.add(trackPoint);
