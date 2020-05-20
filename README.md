@@ -52,7 +52,17 @@ $ ./gradlew test
 #### using maven
 ```
 $ cd track-challenge
+$ mvn clean
+$ mvn install
+$ java -jar target/demo-0.0.1-SNAPSHOT.jar
 ```
+
+To perform automation tests:
+```
+$ mvn test
+```
+
+* IMPORTANT NOTE: Maven and Gradle conflict! Before executing any `mvn` commands, please make sure there is no source code generated from gradle. Use `./gradlew clean` to remove all generated files from gradle build.
 
 ### Manual testing
 using curl
@@ -63,9 +73,11 @@ $ curl -X GET 'localhost:8080/api/gps/-1'
 ```
 
 ### H2 console
-http://localhost:8080/h2-console
+To enable H2 web console, go to `application.properties` and uncomment the property `spring.h2.console.enabled=true`
 
-configuration:
+Visit console at: http://localhost:8080/h2-console
+
+DB connection information (base on `application.properties`)
 ```
 jdbc url=jdbc:h2:mem:gpsdb
 username=sa
