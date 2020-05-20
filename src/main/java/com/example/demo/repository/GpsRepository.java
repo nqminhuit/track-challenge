@@ -10,17 +10,15 @@ import org.springframework.data.repository.query.Param;
 public interface GpsRepository extends CrudRepository<GPS, Long> {
 
     @Query("SELECT gps FROM GPS gps " +
-        "JOIN FETCH gps.metadata " +
-        "JOIN FETCH gps.waypoints " +
-        "JOIN FETCH gps.tracks tracks " +
-        "JOIN FETCH tracks.trackSegments trackSegments " +
-        "JOIN FETCH trackSegments.trackPoints " +
+        "LEFT JOIN FETCH gps.metadata " +
+        "LEFT JOIN FETCH gps.waypoints " +
+        "LEFT JOIN FETCH gps.tracks tracks " +
+        "LEFT JOIN FETCH tracks.trackSegments trackSegments " +
+        "LEFT JOIN FETCH trackSegments.trackPoints " +
         "where gps.id = :id")
     GPS getFetchedGpsById(@Param("id") Long id);
 
-    @Query("SELECT gps FROM GPS gps JOIN FETCH gps.metadata metadata order by metadata.time desc")
+    @Query("SELECT gps FROM GPS gps LEFT JOIN FETCH gps.metadata metadata order by metadata.time desc")
     List<GPS> getAllGpsOnlyFetchMetadata(Pageable pageable);
-
-
 
 }
