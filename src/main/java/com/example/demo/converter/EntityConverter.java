@@ -2,12 +2,14 @@ package com.example.demo.converter;
 
 import static java.util.stream.Collectors.toList;
 import java.util.List;
+import javax.xml.datatype.XMLGregorianCalendar;
 import com.example.demo.domain.GPS;
 import com.example.demo.domain.Metadata;
 import com.example.demo.domain.Track;
 import com.example.demo.domain.TrackSegment;
 import com.example.demo.domain.Waypoint;
 import com.example.demo.dto.Gpx;
+import com.example.demo.dto.LinkDto;
 import com.example.demo.dto.MetadataDto;
 import com.example.demo.dto.TrackDto;
 import com.example.demo.dto.TrackSegmentDto;
@@ -43,14 +45,19 @@ public class EntityConverter {
             .addMappings(mapper -> {
                 mapper.map(src -> src.getDesc(), Metadata::setDescription);
             })
-            .addMappings(mapper -> {
-                mapper.map(src -> src.getLink().getHref(), Metadata::setLinkHref);
-            })
-            .addMappings(mapper -> {
-                mapper.map(src -> src.getLink().getText(), Metadata::setLinkText);
-            })
             .map(dto);
-        entity.setTime(dto.getTime().toGregorianCalendar().getTime());
+
+
+        XMLGregorianCalendar dtoTime = dto.getTime();
+        if (dtoTime != null) {
+            entity.setTime(dtoTime.toGregorianCalendar().getTime());
+        }
+
+        LinkDto linkDto = dto.getLink();
+        if (linkDto != null) {
+            entity.setLinkHref(linkDto.getHref());
+            entity.setLinkText(linkDto.getText());
+        }
         return entity;
     }
 
